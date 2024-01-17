@@ -1,3 +1,4 @@
+using AomTung.Application.Extensions;
 
 namespace AomTung.Api
 {
@@ -13,6 +14,8 @@ namespace AomTung.Api
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddApplication(builder.Configuration);
 
             var app = builder.Build();
 

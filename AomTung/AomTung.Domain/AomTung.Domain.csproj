@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AomTung.Share.Model\AomTung.Share.Model.csproj" />
+  </ItemGroup>
+
 </Project>
