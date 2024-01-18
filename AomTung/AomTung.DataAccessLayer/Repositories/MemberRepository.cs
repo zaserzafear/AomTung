@@ -1,4 +1,6 @@
 ﻿using AomTung.DataAccessLayer.Data;
+using AomTung.DataAccessLayer.DataModels;
+using AomTung.DataAccessLayer.Extensions;
 using AomTung.Domain.Member.Abstractions;
 using AomTung.Share.Model.Member;
 using Microsoft.EntityFrameworkCore;
@@ -9,10 +11,12 @@ namespace AomTung.DataAccessLayer.Repositories
     public class MemberRepository : IMemberRepository
     {
         private readonly AomTungExtendDbContext dbContext;
+        private readonly IMySqlHelper mySqlHelper;
 
-        public MemberRepository(AomTungExtendDbContext dbContext)
+        public MemberRepository(AomTungExtendDbContext dbContext, IMySqlHelper mySqlHelper)
         {
             this.dbContext = dbContext;
+            this.mySqlHelper = mySqlHelper;
         }
 
         public async Task<GetMemberModel> AddSingle(AddMemberModel model)
@@ -28,7 +32,8 @@ namespace AomTung.DataAccessLayer.Repositories
                     usernameParam, passwordParam, firstnameParam, lastnameParam, dateOfBirthParam)
                 .ToListAsync();
 
-            var result = query.Select(x => new GetMemberModel
+            var decrypt = DecryptTblMember(query);
+            var result = decrypt.Select(x => new GetMemberModel
             {
                 id = x.id,
                 username = x.username,
@@ -45,11 +50,13 @@ namespace AomTung.DataAccessLayer.Repositories
             var query = await dbContext.tbl_members
                 .AsNoTracking()
                 .Where(x => !x.is_deleted)
+                .OrderBy(x => x.id)
                 .Skip(skip)
                 .Take(take)
                 .ToListAsync();
 
-            var result = query.Select(x => new GetMemberModel
+            var decrypt = DecryptTblMember(query);
+            var result = decrypt.Select(x => new GetMemberModel
             {
                 id = x.id,
                 username = x.username,
@@ -59,6 +66,21 @@ namespace AomTung.DataAccessLayer.Repositories
             });
 
             return result;
+        }
+
+        private IEnumerable<tbl_member> DecryptTblMember(IEnumerable<tbl_member> model)
+        {
+            var saltKey = dbContext.GetAesSaltKey();
+
+            return model.Select(x =>
+            {
+                x.username = mySqlHelper.aes_decrypt(x.username, saltKey);
+                x.firstname = mySqlHelper.aes_decrypt(x.firstname, saltKey);
+                x.lastname = mySqlHelper.aes_decrypt(x.lastname, saltKey);
+
+                return x;
+            }
+            );
         }
     }
 }

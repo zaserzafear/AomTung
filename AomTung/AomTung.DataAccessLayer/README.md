@@ -16,10 +16,10 @@ To update the database schema after changing any property, follow these steps:
 
 1. Open a terminal or command prompt.
 
-2. Navigate to your project directory containing the `AppDbContext` and other relevant files.
+2. Navigate to your project directory containing the `AomTungDbContext` and other relevant files.
 
 3. Run the following command to scaffold the updated database context and models:
 
    ```bash
-   dotnet ef dbcontext scaffold "Server=localhost;User=admin;Password=admin;Port=3306;Database=demo" --context AppDbContext Pomelo.EntityFrameworkCore.MySql --context-dir Data --output-dir DataModels --data-annotations --use-database-names --force --no-onconfiguring
+   dotnet ef dbcontext scaffold "Server=localhost;User=admin;Password=admin;Port=3306;Database=demo" --context AomTungDbContext Pomelo.EntityFrameworkCore.MySql --context-dir Data --output-dir DataModels --data-annotations --use-database-names --force --no-onconfiguring
    ```

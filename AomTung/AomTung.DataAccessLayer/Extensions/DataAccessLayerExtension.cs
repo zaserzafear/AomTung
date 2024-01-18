@@ -11,6 +11,8 @@ namespace AomTung.DataAccessLayer.Extensions
             AddDbContext<AomTungDbContext>(services, options.AomTungConnection);
             AddDbContext<AomTungExtendDbContext>(services, options.AomTungConnection);
 
+            services.AddTransient<IMySqlHelper, MySqlHelper>();
+
             return services;
         }
 
