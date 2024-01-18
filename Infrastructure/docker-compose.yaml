@@ -1,0 +1,40 @@
+version: "3"
+
+volumes:
+  mysql-data:
+
+services:
+  mysql:
+    image: mysql:8.2.0
+    restart: unless-stopped
+    hostname: mysql
+    volumes:
+      - ./mysql-initdb:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+    environment:
+      TZ: Asia/Bangkok
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: admin
+    ports:
+      - 3306:3306
+
+  phpmyadmin:
+    image: phpmyadmin:5.2-apache
+    restart: unless-stopped
+    hostname: phpmyadmin
+    environment:
+      TZ: Asia/Bangkok
+      PMA_HOST: mysql
+      HIDE_PHP_VERSION: true
+    ports:
+      - 8080:80
+
+  redis:
+    image: redis
+    restart: unless-stopped
+    environment:
+      TZ: Asia/Bangkok
+    ports:
+      - 6379:6379

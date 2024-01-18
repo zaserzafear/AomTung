@@ -11,14 +11,7 @@ namespace AomTung.Application.Extensions
     {
         public static IServiceCollection AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            var aomTung = configuration.GetConnectionString("AomTung")!;
-
-            var dataAccessLayerOptions = new DataAccessLayerOptions
-            {
-                AomTungConnection = aomTung,
-            };
-
-            services.AddDataAccessLayer(dataAccessLayerOptions);
+            services.AddDataAccessLayer(configuration);
 
             services.AddScoped<IMemberRepository, MemberRepository>();
             services.AddScoped<IMemberService, MemberService>();

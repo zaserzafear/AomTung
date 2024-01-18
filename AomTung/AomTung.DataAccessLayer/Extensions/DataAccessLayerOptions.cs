@@ -1,7 +1,10 @@
 ﻿namespace AomTung.DataAccessLayer.Extensions
 {
-    public class DataAccessLayerOptions
+    public record DataAccessLayerOptions
     {
-        public required string AomTungConnection { get; set; }
+        public string AomTungDbConnectionString { get; set; } = null!;
+        public string RedisInstanceName { get; set; } = null!;
+        public string RedisConnectionString { get; set; } = null!;
+        public double MasterDataCacheSeconds { get; set; }
     }
 }

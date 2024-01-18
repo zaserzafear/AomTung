@@ -1,4 +1,4 @@
-﻿namespace AomTung.DataAccessLayer.Extensions
+﻿namespace AomTung.DataAccessLayer.Extensions.MySql
 {
     public interface IMySqlHelper
     {

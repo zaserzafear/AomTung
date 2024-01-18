@@ -1,6 +1,6 @@
 ﻿using AomTung.DataAccessLayer.Data;
 using AomTung.DataAccessLayer.DataModels;
-using AomTung.DataAccessLayer.Extensions;
+using AomTung.DataAccessLayer.Extensions.MySql;
 using AomTung.Domain.Member.Abstractions;
 using AomTung.Share.Model.Member;
 using Microsoft.EntityFrameworkCore;
@@ -32,7 +32,7 @@ namespace AomTung.DataAccessLayer.Repositories
                     usernameParam, passwordParam, firstnameParam, lastnameParam, dateOfBirthParam)
                 .ToListAsync();
 
-            var decrypt = DecryptTblMember(query);
+            var decrypt = await DecryptTblMember(query);
             var result = decrypt.Select(x => new GetMemberModel
             {
                 id = x.id,
@@ -55,7 +55,7 @@ namespace AomTung.DataAccessLayer.Repositories
                 .Take(take)
                 .ToListAsync();
 
-            var decrypt = DecryptTblMember(query);
+            var decrypt = await DecryptTblMember(query);
             var result = decrypt.Select(x => new GetMemberModel
             {
                 id = x.id,
@@ -68,9 +68,9 @@ namespace AomTung.DataAccessLayer.Repositories
             return result;
         }
 
-        private IEnumerable<tbl_member> DecryptTblMember(IEnumerable<tbl_member> model)
+        private async Task<IEnumerable<tbl_member>> DecryptTblMember(IEnumerable<tbl_member> model)
         {
-            var saltKey = dbContext.GetAesSaltKey();
+            var saltKey = await dbContext.GetAesSaltKey();
 
             return model.Select(x =>
             {
