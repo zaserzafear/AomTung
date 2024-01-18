@@ -12,6 +12,13 @@ namespace AomTung.Application.Member
             this.memberRepository = memberRepository;
         }
 
+        public async Task<GetMemberModel> AddSingle(AddMemberModel model)
+        {
+            var result = await memberRepository.AddSingle(model);
+
+            return result;
+        }
+
         public async Task<IEnumerable<GetMemberModel>> GetAll()
         {
             var result = await memberRepository.GetAll();

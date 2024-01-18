@@ -1,4 +1,5 @@
 ﻿using AomTung.Domain.Member.Abstractions;
+using AomTung.Share.Model.Member;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AomTung.Api.Controllers
@@ -18,6 +19,14 @@ namespace AomTung.Api.Controllers
         public async Task<IActionResult> GetAll()
         {
             var result = await memberService.GetAll();
+
+            return Ok(result);
+        }
+
+        [HttpPost("AddMember")]
+        public async Task<IActionResult> AddMember([FromBody] AddMemberModel model)
+        {
+            var result = await memberService.AddSingle(model);
 
             return Ok(result);
         }

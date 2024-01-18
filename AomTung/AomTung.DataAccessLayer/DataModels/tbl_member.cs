@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AomTung.DataAccessLayer.DataModels;
 
-[Index("username", Name = "username", IsUnique = true)]
+[Index("username", Name = "username_UNIQUE", IsUnique = true)]
 public partial class tbl_member
 {
     [Key]

@@ -1,4 +1,6 @@
-﻿using AomTung.DataAccessLayer.DataModels;
+﻿using System;
+using System.Collections.Generic;
+using AomTung.DataAccessLayer.DataModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AomTung.DataAccessLayer.Data;
@@ -21,6 +23,11 @@ public partial class AomTungDbContext : DbContext
         modelBuilder.Entity<tbl_member>(entity =>
         {
             entity.HasKey(e => e.id).HasName("PRIMARY");
+
+            entity.Property(e => e.created_timestamp).HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(e => e.updated_timestamp)
+                .ValueGeneratedOnAddOrUpdate()
+                .HasDefaultValueSql("CURRENT_TIMESTAMP");
         });
 
         OnModelCreatingPartial(modelBuilder);
